@@ -1,6 +1,7 @@
 const express = require("express")
 const cors = require("cors")
 const serverless = require("serverless-http")
+const { collection, ObjectId } = require("../config/database")
 
 const app = express()
 const router = express.Router()
@@ -14,7 +15,10 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 router.get("/", (req, res) => {
-    res.send("User List")
+    collection.find().toArray((err, result) => {
+        if (err) throw err;
+        res.json(result)
+    })
 })
 
 router.post("/", (req, res) => {
